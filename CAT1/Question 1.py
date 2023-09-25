@@ -2,8 +2,8 @@ import json
 import pandas as pd
 import os
 
-# Directory containing JSONL files
-jsonl_directory = '/School Stuuf/3.2 Notes/AI/PythonCodeLabs/CAT1/data/'
+# Directory containing JSONL files replace this with the path to where the files are located in your respective laptops
+jsonl_directory = '/School Stuuf/3.2 Notes/ComputerGraphics/ClassProjectCodes/CAT1/data/'
 
 # Dictionary to store data for each language
 language_data = {}
