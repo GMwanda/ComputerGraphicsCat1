@@ -1,6 +1,16 @@
+import argparse
 import json
-import pandas as pd
 import os
+from pathlib import Path
+
+import pandas as pd
+
+
+def get_script_directory():
+    # Get the directory where this script is located
+    script_path = Path(__file__).resolve()
+    return script_path.parent
+
 
 def extract_data_from_jsonl(jsonl_directory):
     language_data = {}
@@ -28,6 +38,7 @@ def extract_data_from_jsonl(jsonl_directory):
 
     return language_data
 
+
 def create_and_export_excel_files(language_data, output_directory):
     for language_code, data in language_data.items():
         # Create a DataFrame for the language with the specified columns
@@ -40,15 +51,18 @@ def create_and_export_excel_files(language_data, output_directory):
         excel_path = os.path.join(output_directory, excel_filename)
         df.to_excel(excel_path, index=False)
 
-if __name__ == "__main__":
-    # Path containing the JSONL files. (Replace this with the path in your respective laptops.)
-    jsonl_directory = '/School Stuuf/3.2 Notes/ComputerGraphics/ClassProjectCodes/CAT1/data/'
 
-    # Output directory for Excel files
-    excel_output_directory = '/School Stuuf/3.2 Notes/ComputerGraphics/ClassProjectCodes/CAT1/Excel Files Q1/'
+def main():
+    # Replace the JSONL and output directories with the provided path
+    jsonl_directory = r'S:\School Stuuf\3.2 Notes\ComputerGraphics\ClassProjectCodes\CAT1\data'
+    output_directory = get_script_directory()  # You can change this to the desired output directory
 
     # Extract data from JSONL files
     language_data = extract_data_from_jsonl(jsonl_directory)
 
     # Create and export Excel files
-    create_and_export_excel_files(language_data, excel_output_directory)
+    create_and_export_excel_files(language_data, output_directory)
+
+
+if __name__ == "__main__":
+    main()
