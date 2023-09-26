@@ -1,68 +1,83 @@
-import argparse
 import json
 import os
 from pathlib import Path
-
 import pandas as pd
-
 
 def get_script_directory():
     # Get the directory where this script is located
     script_path = Path(__file__).resolve()
     return script_path.parent
 
+def create_excel_sheets_directory(output_directory):
+    # Create a subdirectory called "ExcelSheets1" in the output directory
+    excel_sheets_directory = os.path.join(output_directory, "ExcelSheets1")
+    os.makedirs(excel_sheets_directory, exist_ok=True)  # Ensure it's created if it doesn't exist
+    return excel_sheets_directory
 
-def extract_data_from_jsonl(jsonl_directory):
-    language_data = {}
+def find_jsonl_files(jsonl_directory):
+    # Initialize a list to store the paths of JSONL files
+    jsonl_files = []
 
+    # List all files in the JSONL directory
     for filename in os.listdir(jsonl_directory):
-        if filename.endswith(".jsonl"):
-            file_path = os.path.join(jsonl_directory, filename)
+        file_path = os.path.join(jsonl_directory, filename)
 
-            # Extract language code from the filename, assuming the format is en-xx.jsonl
-            language_code = filename.split('.')[0]
+        # Check if the file is a JSONL file (ends with .jsonl)
+        if filename.endswith(".jsonl") and os.path.isfile(file_path):
+            jsonl_files.append(file_path)
 
-            # Initialize language-specific data dictionary
-            if language_code not in language_data:
-                language_data[language_code] = []
+    return jsonl_files
 
-            with open(file_path, 'r', encoding='utf-8') as file:
-                for line in file:
-                    try:
-                        # Load JSON data from each line
-                        data = json.loads(line)
-                        language_data[language_code].append(data)
-                    except json.JSONDecodeError:
-                        # Handle invalid JSON lines (skip or log as needed)
-                        print(f"Skipping invalid JSON line in {filename}: {line}")
+def extract_data_from_jsonl(jsonl_file):
+    language_data = []
+
+    with open(jsonl_file, 'r', encoding='utf-8') as file:
+        for line in file:
+            try:
+                # Load JSON data from each line
+                data = json.loads(line)
+                language_data.append(data)
+            except json.JSONDecodeError:
+                # Handle invalid JSON lines (skip or log as needed)
+                print(f"Skipping invalid JSON line in {jsonl_file}")
 
     return language_data
 
+def create_and_export_excel_file(jsonl_file, excel_sheets_directory):
+    # Extract data from JSONL file
+    language_data = extract_data_from_jsonl(jsonl_file)
 
-def create_and_export_excel_files(language_data, output_directory):
-    for language_code, data in language_data.items():
-        # Create a DataFrame for the language with the specified columns
-        df = pd.DataFrame(data, columns=['id', 'utt', 'annot_utt'])
+    # Get the file name without extension
+    file_name = os.path.splitext(os.path.basename(jsonl_file))[0]
 
-        # Define Excel filename using language code
-        excel_filename = f'{language_code}.xlsx'
+    # Create a DataFrame for the language with the specified columns
+    df = pd.DataFrame(language_data, columns=['id', 'utt', 'annot_utt'])
 
-        # Export DataFrame to Excel
-        excel_path = os.path.join(output_directory, excel_filename)
-        df.to_excel(excel_path, index=False)
+    # Define Excel filename using the file name
+    excel_filename = f'{file_name}.xlsx'
 
+    # Define the full path to the Excel file in the "ExcelSheets1" directory
+    excel_file_path = os.path.join(excel_sheets_directory, excel_filename)
+
+    # Export DataFrame to Excel
+    df.to_excel(excel_file_path, index=False)
 
 def main():
-    # Replace the JSONL and output directories with the provided path
-    jsonl_directory = r'S:\School Stuuf\3.2 Notes\ComputerGraphics\ClassProjectCodes\CAT1\data'
-    output_directory = get_script_directory()  # You can change this to the desired output directory
+    # Replace the JSONL directory with the provided path
+    jsonl_directory = get_script_directory()  # You can change this to the desired JSONL directory
 
-    # Extract data from JSONL files
-    language_data = extract_data_from_jsonl(jsonl_directory)
+    # Get the script's directory
+    script_directory = get_script_directory()
 
-    # Create and export Excel files
-    create_and_export_excel_files(language_data, output_directory)
+    # Create "ExcelSheets1" directory in the script's directory
+    excel_sheets_directory = create_excel_sheets_directory(script_directory)
 
+    # Find all JSONL files in the specified directory
+    jsonl_files = find_jsonl_files(jsonl_directory)
+
+    # Process each JSONL file and create Excel files in the "ExcelSheets1" directory
+    for jsonl_file in jsonl_files:
+        create_and_export_excel_file(jsonl_file, excel_sheets_directory)
 
 if __name__ == "__main__":
     main()
