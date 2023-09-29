@@ -1,33 +1,38 @@
 import json
 import os
-import glob
 
-# Find all "en-US.jsonl" files in the current directory.
-input_files = glob.glob("*-US.jsonl")
+# Define the path to the directory containing the JSONL files.
+data_directory = "data"
 
-# Define the output JSON file.
-output_json_file = "translations.json"
+# Initialize an empty dictionary to store translations.
+translations = {}
 
-# Initialize an empty list to store translations.
-translations = []
+# Iterate through each JSONL file in the data directory.
+for filename in os.listdir(data_directory):
+    if filename.endswith(".jsonl"):
+        with open(os.path.join(data_directory, filename), "r", encoding="utf-8") as file:
+            # Read each line in the JSONL file.
+            for line in file:
+                data = json.loads(line)
 
-# Loop through each found file.
-for input_file in input_files:
-    with open(input_file, "r") as file:
-        # Read each line in the JSONL file.
-        for line in file:
-            data = json.loads(line)
+                # Check if the data is from the train set and the source language is English (en).
+                if data.get("partition") == "train" and data.get("locale").startswith("en-"):
+                    id = data.get("id")
+                    utt = data.get("utt")
+                    lang = data.get("locale")[3:]  # Extract the target language (xx).
 
-            # Check if the locale is "en" and add the "id" and "utt" to the translations list.
-            if data.get("locale") == "en":
-                translation = {"id": data.get("id"), "utt": data.get("utt")}
-                translations.append(translation)
+                    # Check if the language code (xx) already exists in the translations dictionary.
+                    if lang not in translations:
+                        translations[lang] = []
+
+                    # Append the translation to the corresponding language.
+                    translations[lang].append({"id": id, "utt": utt})
 
 # Create the final JSON structure.
 output_data = {"translations": translations}
 
 # Write the JSON data to the output file with pretty-printing.
-with open(output_json_file, "w", encoding="utf-8") as outfile:
+with open("translations.json", "w", encoding="utf-8") as outfile:
     json.dump(output_data, outfile, ensure_ascii=False, indent=4)
 
-print(f"Translations saved to {output_json_file}")
+print(f"Translations from English (en) to xx saved to translations.json")
