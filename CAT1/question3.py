@@ -1,13 +1,16 @@
 import os
 import json
 
-# Define the absolute file paths for your input training data files
-english_train_file_path = '/computer_graphcs/ComputerGraphicsCat1/CAT1/eng-train.jsonl'
-german_train_file_path = '/computer_graphcs/ComputerGraphicsCat1/CAT1/ger-train.jsonl'
-swahili_train_file_path = '/computer_graphcs/ComputerGraphicsCat1/CAT1/swa-train.jsonl'
+# Get the current working directory of your Python script
+current_directory = os.path.dirname(os.path.abspath(__file__))
 
-# Define the absolute file path for the output JSON file
-output_file_path = '/computer_graphcs/ComputerGraphicsCat1/CAT1/translations.json'  # Replace with the actual directory and file name
+# Define relative file paths for your input training data files
+english_train_file_path = os.path.join(current_directory, 'eng-train.jsonl')
+german_train_file_path = os.path.join(current_directory, 'ger-train.jsonl')
+swahili_train_file_path = os.path.join(current_directory, 'swa-train.jsonl')
+
+# Define a relative file path for the output JSON file
+output_file_path = os.path.join(current_directory, 'translations.json')
 
 # Load the data from the existing training files
 english_train_data = []
