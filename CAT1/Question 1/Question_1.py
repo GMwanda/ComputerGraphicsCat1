@@ -79,5 +79,5 @@ def main():
     for jsonl_file in jsonl_files:
         create_and_export_excel_file(jsonl_file, excel_sheets_directory)
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

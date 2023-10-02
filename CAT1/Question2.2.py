@@ -3,7 +3,9 @@ import pandas as pd
 import Constraints
 import json
 
-folder_path = '/Users/dave/PycharmProjects/compGraphicsClass/CAT1/data'
+current_directory = os.path.dirname(os.path.abspath(__file__))
+folder_path = os.path.join(current_directory, 'data')
+# folder_path = '/Users/dave/PycharmProjects/compGraphicsClass/CAT1/data'
 file_list = ["en-US.jsonl", "de-DE.jsonl", "sw-KE.jsonl"]
 engtest = []
 engtrain = []
