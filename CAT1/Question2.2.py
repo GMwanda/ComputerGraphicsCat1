@@ -3,10 +3,7 @@ import pandas as pd
 import Constraints
 import json
 
-# Get the current working directory of your Python script
 current_directory = os.path.dirname(os.path.abspath(__file__))
-
-# Define relative folder path for data files
 folder_path = os.path.join(current_directory, 'data')
 
 file_list = ["en-US.jsonl", "de-DE.jsonl", "sw-KE.jsonl"]
