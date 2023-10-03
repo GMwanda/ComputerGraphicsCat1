@@ -36,24 +36,15 @@ Project Structure
 The project structure should resemble the following:
 
 ```
-project-root/
-│
-├── 1.1/data/
-│       └── excel
-│
-├── main.py
-├── q2.py
-│
-│
-├── en-xx.xlsx (Generated)
-├── en_train.jsonl (Generated)
-├── sw_train.jsonl (Generated)
-├── de_train.jsonl (Generated)
-│   └── translations.json (Generated)
-│
-├── README.md
-├── generator.sh
-└── other_files...
+ComputerGraphicsCat1
+  └──CAT1
+      └──data
+      └──Question 1
+          └──Question_1.py
+      └──Constraints.py
+      └──Question2.2.py
+      └──Question3.py
+      └──README.md
 ```
 Running the Project
 Question 1
