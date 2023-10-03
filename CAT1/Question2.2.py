@@ -1,7 +1,7 @@
-import os
-import pandas as pd
-import Constraints
 import json
+import os
+
+import Constraints
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
 folder_path = os.path.join(current_directory, 'data')
