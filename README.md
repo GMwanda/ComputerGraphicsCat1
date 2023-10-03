@@ -46,15 +46,7 @@ ComputerGraphicsCat1
       └──Question3.py
       └──README.md
 ```
-Running the Project
-Question 1
-Place your dataset file (input_data.xlsx) inside the data/ directory.
 
-Run the following command to execute Question 1:
-
-```
-./generate.sh
-```
 The script will generate language-specific Excel files (en-xx.xlsx) in
 the results/ directory.
 Question 2
