@@ -5,7 +5,6 @@ import Constraints
 def partitionLanguage():
     current_directory = os.path.dirname(os.path.abspath(__file__))
     folder_path = os.path.join(current_directory, 'data')
-
     file_list = ["en-US.jsonl", "de-DE.jsonl", "sw-KE.jsonl"]
     engtest = []
     engtrain = []
@@ -16,7 +15,6 @@ def partitionLanguage():
     swatest = []
     swatrain = []
     swadev = []
-
     for file_name in file_list:
         file_path = os.path.join(folder_path, file_name)
         if os.path.isfile(file_path) and file_name == 'en-US.jsonl':
