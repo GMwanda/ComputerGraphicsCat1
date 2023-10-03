@@ -1,32 +1,82 @@
-
-# Revisiting Python README
-
 ## Introduction
-This project aims to set up a Python3 development environment for the assessment, perform various tasks related to data processing, and provide documentation on the approach taken and collaboration within the team.
 
-## Question 1 - Python3 Development Environment
-In this section, we describe how we set up the Python3 development environment, installed relevant dependencies, and processed the MASSIVE Dataset.
+This project focuses on processing and managing language data. It
+answers two main questions:
 
-### Environment Setup
-We created a Python3 development environment for this assessment, ensuring that all required dependencies were installed. We recommend using PyCharm as our IDE for this project.
+1. **Python3 Development Environment Setup:** Set up a Python3
+development environment, install relevant dependencies, and build a
+project structure similar to PyCharm's. Import a massive dataset and
+generate language-specific Excel files (en-xx.xlsx) using specific
+fields (id, utt, and annot_utt). Recursive algorithms are not used to
+optimize performance.
 
-### Importing the MASSIVE Dataset
-We imported the MASSIVE Dataset mentioned in the Data File above into our development environment.
+2. **Working with Files:** Generate separate JSONL files for English
+(en), Swahili (sw), and German (de) datasets with test, train, and dev
+partitions. Create a single large JSON file showcasing translations
+from English to other languages (xx) for the training dataset.
 
-### Generating en-xx.xlxs Files
-Our task was to generate en-xx.xlxs files for all languages in the dataset, with English (en) as the pivot language. We achieved this without using recursive algorithms to avoid inefficient memory usage.
+## Prerequisites
 
-### Flags for Running
-To facilitate running this process, we utilized flags in our generator.sh files.
+Before running the project, ensure you have the following
+prerequisites installed:
 
-## Question 2 - Working with Files
-This section outlines how we worked with files, including generating separate JSONL files for specific languages and creating a large JSON file for all translations from English to other languages.
+- Python 3.x
+- pip (Python package manager)
 
-### Generating JSONL Files
-For English (en), Swahili (sw), and German (de), we generated separate JSONL files for test, train, and dev data sets.
+## Installation
 
-### Large JSON File
-We also created a large JSON file containing all translations from English (en) to other languages (xx) while including the id and utt for all the train sets. We ensured that the JSON file structure was prettily printed for better readability.
-For further details and code walkthrough, please refer to the relevant sections in our GitHub repository.
+You can install the required Python libraries/packages using the
+following command:
 
----
+```
+pip install jsonlines json os pandas sys
+```
+
+Project Structure
+The project structure should resemble the following:
+
+```
+project-root/
+│
+├── 1.1/data/
+│       └── excel
+│
+├── main.py
+├── q2.py
+│
+│
+├── en-xx.xlsx (Generated)
+├── en_train.jsonl (Generated)
+├── sw_train.jsonl (Generated)
+├── de_train.jsonl (Generated)
+│   └── translations.json (Generated)
+│
+├── README.md
+├── generator.sh
+└── other_files...
+```
+Running the Project
+Question 1
+Place your dataset file (input_data.xlsx) inside the data/ directory.
+
+Run the following command to execute Question 1:
+
+```
+./generate.sh
+```
+The script will generate language-specific Excel files (en-xx.xlsx) in
+the results/ directory.
+Question 2
+Make sure you have the English (en), Swahili (sw), and German (de)
+JSONL files (e.g., en-US.jsonl, de-DE.jsonl, sw-KE.jsonl) in the
+project directory.
+
+Run the following command to execute Question 2:
+
+```
+python q2.py
+```
+The script will generate separate JSONL files for English, Swahili,
+and German in the results/ directory. Additionally, it will create a
+large JSON file (translations.json) showcasing translations from
+English to other languages.
