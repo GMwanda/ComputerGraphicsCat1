@@ -4,7 +4,7 @@
 ## Introduction
 This project aims to set up a Python3 development environment for the assessment, perform various tasks related to data processing, and provide documentation on the approach taken and collaboration within the team.
 
-## Question 1 - Python3 Development Environment (10 Marks)
+## Question 1 - Python3 Development Environment
 In this section, we describe how we set up the Python3 development environment, installed relevant dependencies, and processed the MASSIVE Dataset.
 
 ### Environment Setup
@@ -19,7 +19,7 @@ Our task was to generate en-xx.xlxs files for all languages in the dataset, with
 ### Flags for Running
 To facilitate running this process, we utilized flags in our generator.sh files.
 
-## Question 2 - Working with Files (10 Marks)
+## Question 2 - Working with Files
 This section outlines how we worked with files, including generating separate JSONL files for specific languages and creating a large JSON file for all translations from English to other languages.
 
 ### Generating JSONL Files
