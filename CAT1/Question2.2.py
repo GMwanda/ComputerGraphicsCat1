@@ -1,100 +1,45 @@
-import os
 import json
-import Constraints
+import os
 
-def partitionLanguage():
+from Constraints import ENGLISH_TEST_OUTPUT, ENGLISH_TRAIN_OUTPUT, ENGLISH_DEV_OUTPUT, GERMAN_TEST_OUTPUT, \
+    GERMAN_TRAIN_OUTPUT, GERMAN_DEV_OUTPUT, KISWAHILI_TEST_OUTPUT, KISWAHILI_TRAIN_OUTPUT, KISWAHILI_DEV_OUTPUT
+
+
+def read_jsonl_file(file_path):
+    with open(file_path, 'r') as jsonl_file:
+        return [json.loads(line) for line in jsonl_file]
+
+
+def write_to_output_file(data_list, output_path):
+    with open(output_path, 'a') as output_file:
+        for record in data_list:
+            json.dump(record, output_file)
+            output_file.write('\n')
+
+
+def get_output_paths(partition):
+    return {
+        "test": (ENGLISH_TEST_OUTPUT, GERMAN_TEST_OUTPUT, KISWAHILI_TEST_OUTPUT),
+        "train": (ENGLISH_TRAIN_OUTPUT, GERMAN_TRAIN_OUTPUT, KISWAHILI_TRAIN_OUTPUT),
+        "dev": (ENGLISH_DEV_OUTPUT, GERMAN_DEV_OUTPUT, KISWAHILI_DEV_OUTPUT)
+    }
+
+
+def partition_language():
     current_directory = os.path.dirname(os.path.abspath(__file__))
     folder_path = os.path.join(current_directory, 'data')
-
     file_list = ["en-US.jsonl", "de-DE.jsonl", "sw-KE.jsonl"]
-    engtest = []
-    engtrain = []
-    engdev = []
-    gertest = []
-    gertrain = []
-    gerdev = []
-    swatest = []
-    swatrain = []
-    swadev = []
 
     for file_name in file_list:
         file_path = os.path.join(folder_path, file_name)
-        if os.path.isfile(file_path) and file_name == 'en-US.jsonl':
-            with open(file_path, 'r') as jsonl_file:
-                for line in jsonl_file:
-                    data = json.loads(line)
-                    partition = data.get("partition")
-                    if partition == "test":
-                        engtest.append(data)
-                    elif partition == "train":
-                        engtrain.append(data)
-                    else:
-                        engdev.append(data)
 
-                with open(os.path.join(current_directory, Constraints.ENGLISH_TEST_OUTPUT), 'a') as testfile:
-                    for record in engtest:
-                        json.dump(record, testfile)
-                        testfile.write('\n')
+        if os.path.isfile(file_path):
+            data_list = read_jsonl_file(file_path)
+            partition = data_list[0].get("partition")
 
-                with open(os.path.join(current_directory, Constraints.ENGLISH_TRAIN_OUTPUT), 'a') as trainfile:
-                    for t in engtrain:
-                        json.dump(t, trainfile)
-                        trainfile.write('\n')
+            output_paths = get_output_paths(partition)
+            output_path = output_paths[file_list.index(file_name)]
 
-                with open(os.path.join(current_directory, Constraints.ENGLISH_DEV_OUTPUT), 'a') as devfile:
-                    for t in engdev:
-                        json.dump(t, devfile)
-                        devfile.write('\n')
-        elif os.path.isfile(file_path) and file_name == 'de-DE.jsonl':
-            with open(file_path, 'r') as jsonl_file:
-                for line in jsonl_file:
-                    data = json.loads(line)
-                    partition = data.get("partition")
-                    if partition == "test":
-                        gertest.append(data)
-                    elif partition == "train":
-                        gertrain.append(data)
-                    else:
-                        gerdev.append(data)
+            write_to_output_file(data_list, os.path.join(current_directory, output_path))
 
-                with open(os.path.join(current_directory, Constraints.GERMAN_TEST_OUTPUT), 'a') as testfile:
-                    for record in gertest:
-                        json.dump(record, testfile)
-                        testfile.write('\n')
-
-                with open(os.path.join(current_directory, Constraints.GERMAN_TRAIN_OUTPUT), 'a') as trainfile:
-                    for t in gertrain:
-                        json.dump(t, trainfile)
-                        trainfile.write('\n')
-
-                with open(os.path.join(current_directory, Constraints.GERMAN_DEV_OUTPUT), 'a') as devfile:
-                    for t in gerdev:
-                        json.dump(t, devfile)
-                        devfile.write('\n')
-        else:
-            with open(file_path, 'r') as jsonl_file:
-                for line in jsonl_file:
-                    data = json.loads(line)
-                    partition = data.get("partition")
-                    if partition == "test":
-                        swatest.append(data)
-                    elif partition == "train":
-                        swatrain.append(data)
-                    else:
-                        swadev.append(data)
-
-                with open(os.path.join(current_directory, Constraints.KISWAHILI_TEST_OUTPUT), 'a') as testfile:
-                    for record in swatest:
-                        json.dump(record, testfile)
-                        testfile.write('\n')
-
-                with open(os.path.join(current_directory, Constraints.KISWAHILI_TRAIN_OUTPUT), 'a') as trainfile:
-                    for t in swatrain:
-                        json.dump(t, trainfile)
-                        trainfile.write('\n')
-
-                with open(os.path.join(current_directory, Constraints.KISWAHILI_DEV_OUTPUT), 'a') as devfile:
-                    for t in swadev:
-                        json.dump(t, devfile)
-                        devfile.write('\n')
-
+partition_language()
